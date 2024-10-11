@@ -1,0 +1,27 @@
+---
+services:
+  api:
+    image: movie-recomender-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: api
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    environment:
+      CHROMADB_URL: /var/data/chromadb
+    volumes:
+      - ./data:/var/data
+
+  ui:
+    image: movie-recomender-ui:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: chat-ui
+    ports:
+      - '8501:8501'
+    environment:
+      API_URL: http://api:8080
